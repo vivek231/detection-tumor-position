@@ -13,7 +13,7 @@ def save_to_exel(lists, filename):
 
 
 root_file = "b"
-exel = [["image name", "height","width","class", "x_max", "x_min", "y_max", "Y_min"]]
+exel = [["image name" ,"width", "height","class", "x_min", "Y_min","x_max", "y_max"]]
 output_file = "outputs"
 
 
@@ -31,10 +31,10 @@ for directory, subdirectories, files in os.walk(root_file):
         areas = [cv2.contourArea(c) for c in contours]
         max_index = np.argmax(areas)
         cnt=contours[max_index]
-        x,y,w,h = cv2.boundingRect(cnt)
+        x_min,Y_min,x_max,y_max = cv2.boundingRect(cnt)
         #exel.append([name, x, y, w, h])
-        w=w+x
-        h=y+h
-        exel.append([name,height ,width ,"tumor",w, x, h, y])
+        x_max=x_max+x_min
+        y_max=y_max+Y_min
+        exel.append([img ,width,height ,"tumor",x_min, Y_min, x_max, y_max])
 
 save_to_exel(exel, output_file + "/" + "table.csv")
