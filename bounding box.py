@@ -13,7 +13,7 @@ def save_to_exel(lists, filename):
 
 
 root_file = "b"
-exel = [["image name", "x_max", "x_min", "y_max", "Y_min"]]
+exel = [["image name", "height","width","class", "x_max", "x_min", "y_max", "Y_min"]]
 output_file = "outputs"
 
 
@@ -24,6 +24,7 @@ for directory, subdirectories, files in os.walk(root_file):
         img = os.path.join(directory, file)
         print (name)
         im = cv2.imread(img)
+        height, width, channels = im.shape
         imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
         ret,thresh = cv2.threshold(imgray,127,255,0)
         contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
@@ -34,6 +35,6 @@ for directory, subdirectories, files in os.walk(root_file):
         #exel.append([name, x, y, w, h])
         w=w+x
         h=y+h
-        exel.append([name, w, x, h, y])
+        exel.append([name,height ,width ,"tumor",w, x, h, y])
 
 save_to_exel(exel, output_file + "/" + "table.csv")
